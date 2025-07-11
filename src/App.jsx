@@ -24,6 +24,11 @@ const ManageVenues = lazy(() => import("./core/private/manageVenues/ManageVenues
 const ManageTable = lazy(() => import("./core/private/manageVenues/Table.jsx"));
 const UserTable = lazy(() => import("./core/private/manageUsers/Table.jsx"));
 
+const ManageBookings = lazy(() => import("./core/private/manageBookings/index.jsx"));
+const AdminNotifications = lazy(() => import("./core/private/notifications/notification.jsx"));
+
+
+
 const MyAccountLayout = lazy(() => import("./core/private/users/MyAccount/MyAccountLayout.jsx"));
 // const AccountPage = lazy(() => import("./core/private/users/MyAccount/MyAccount.jsx"));
 const ProfileImage = lazy(() => import("./core/private/users/MyAccount/ProfileImage.jsx"));
@@ -32,6 +37,11 @@ const Favorites = lazy(() => import("./core/private/users/MyAccount/Favorites.js
 
 const BookingForm = lazy(() => import("./core/private/users/Booking/BookingForm.jsx"));
 const MenuTier = lazy(() => import("./core/private/users/Booking/MenuTier.jsx"));
+const ReviewMenu = lazy(() => import("./core/private/users/Booking/ReviewMenu.jsx"));
+const PaymentPage = lazy(() => import("./core/private/users/Booking/PaymentPage.jsx"));
+const PaymentSuccess = lazy(() => import("./core/private/users/Booking/PaymentSuccess.jsx"));
+
+
 
 
 function App() {
@@ -118,6 +128,32 @@ function App() {
         </Suspense>
       ),
     },
+    {
+      path: "/booking/review-menu",
+      element: (
+        <Suspense>
+          <ReviewMenu />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/booking/payment",
+      element: (
+        <Suspense>
+          <PaymentPage />
+        </Suspense>
+      ),
+    },
+
+    {
+      path: "/payment-success",
+      element: (
+        <Suspense>
+          <PaymentSuccess />
+        </Suspense>
+      ),
+    },
+    
    
     {
       path: "/register",
@@ -215,6 +251,23 @@ function App() {
               ),
             },
           ],
+        },
+        {
+          path: "booking",
+          element: (
+            <ProtectedRoute requiredRole="admin">
+              <ManageBookings />
+            </ProtectedRoute>
+          ),
+        },
+
+        {
+          path: "notifications",
+          element: (
+            <ProtectedRoute requiredRole="admin">
+              <AdminNotifications />
+            </ProtectedRoute>
+          ),
         },
         
       ],

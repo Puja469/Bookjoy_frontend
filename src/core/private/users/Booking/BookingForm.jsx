@@ -95,10 +95,10 @@ function BookingForm() {
       event_id: selectedEvent._id, 
       name: formData.name,
       email: formData.email,
-      guests: parseInt(formData.guests), // ✅ make sure it's a number
+      guests: parseInt(formData.guests), 
       check_in_date: checkIn,
       check_out_date: checkOut,
-      function_type: formData.eventName, // ✅ renamed field
+      function_type: formData.eventName,
       function_time: formData.function_time,
     };
 

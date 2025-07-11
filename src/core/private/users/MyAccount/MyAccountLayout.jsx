@@ -15,10 +15,10 @@ const MyAccountLayout = () => {
 
   return (
     <div className="flex flex-col min-h-[110vh] bg-white">
-      {/* Top Navigation */}
+    
       <Header />
 
-      {/* Account Section */}
+     
       <main className="flex-1 flex justify-center px-4 mt-28 mb-16">
         <div className="w-full max-w-6xl bg-white border rounded-lg shadow-lg p-8">
           <h1 className="text-2xl font-bold mb-8 text-gray-800">My Account</h1>
@@ -78,7 +78,7 @@ const MyAccountLayout = () => {
               </div>
             </div>
 
-            {/* Main Content Area */}
+           
             <div className="w-full md:w-3/4">
               <Outlet />
             </div>

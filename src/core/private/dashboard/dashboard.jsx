@@ -1,88 +1,155 @@
-import React from "react";
-import { Line, Bar, Doughnut } from "react-chartjs-2";
+import React, { useEffect, useState } from "react";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  ArcElement,
+  FaClipboardList,
+  FaHotel,
+  FaUser,
+  FaBell,
+} from "react-icons/fa";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
   Tooltip,
-  Legend,
-} from "chart.js";
-
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  ArcElement,
-  Tooltip,
-  Legend
-);
+  ResponsiveContainer,
+  CartesianGrid,
+  BarChart,
+  Bar,
+} from "recharts";
+import axios from "axios";
 
 const Dashboard = () => {
-  const lineData = {
-    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-    datasets: [
-      {
-        label: "Weekly Activity",
-        data: [20, 40, 30, 50, 60, 70, 90],
-        borderColor: "#4f46e5",
-        backgroundColor: "rgba(79, 70, 229, 0.2)",
-        tension: 0.4,
-      },
-    ],
-  };
+  const [summary, setSummary] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const token = localStorage.getItem("token");
 
-  const doughnutData = {
-    labels: ["Resolved", "Pending"],
-    datasets: [
-      {
-        data: [80, 20],
-        backgroundColor: ["#4f46e5", "#a5b4fc"],
-      },
-    ],
-  };
+  useEffect(() => {
+    const fetchDashboardSummary = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/dashboard/summary", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setSummary(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching dashboard summary:", error);
+      }
+    };
+
+    fetchDashboardSummary();
+  }, [token]);
+
+  if (loading || !summary) return <div className="p-6 text-gray-700">Loading...</div>;
+
+  const {
+    totalBookings,
+    totalVenues,
+    totalUsers,
+    newNotifications,
+    recentBookings,
+    bookingsOverTime,
+    topVenues,
+  } = summary;
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
+    <div className="p-6 space-y-8">
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <SummaryCard icon={<FaClipboardList />} label="Total Bookings" value={totalBookings} />
+        <SummaryCard icon={<FaHotel />} label="Total Venues" value={totalVenues} />
+        <SummaryCard icon={<FaUser />} label="Registered Users" value={totalUsers} />
+        <SummaryCard icon={<FaBell />} label="New Notifications" value={newNotifications} />
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white p-4 rounded shadow">
-          <h2 className="text-base font-semibold">Active Users</h2>
-          <p className="text-2xl font-bold">4</p>
+      {/* Charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white rounded-xl shadow p-4">
+          <h2 className="text-lg font-semibold mb-4">Bookings Over Time</h2>
+          <ResponsiveContainer width="100%" height={250}>
+            <LineChart data={bookingsOverTime}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Line type="monotone" dataKey="count" stroke="#F87171" />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
-        <div className="bg-white p-4 rounded shadow">
-          <h2 className="text-base font-semibold">Products Resolved</h2>
-          <p className="text-2xl font-bold">5%</p>
-        </div>
-        <div className="bg-white p-4 rounded shadow">
-          <h2 className="text-base font-semibold">Pending Products</h2>
-          <p className="text-2xl font-bold">8</p>
-        </div>
-        <div className="bg-white p-4 rounded shadow">
-          <h2 className="text-base font-semibold">Total Products</h2>
-          <p className="text-2xl font-bold">20</p>
+
+        <div className="bg-white rounded-xl shadow p-4">
+          <h2 className="text-lg font-semibold mb-4">Top Venues by Bookings</h2>
+          <ResponsiveContainer width="100%" height={250}>
+            <BarChart data={topVenues}>
+              <XAxis dataKey="venue" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="bookings" fill="#F87171" />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        <div className="bg-white p-6 rounded shadow">
-          <h3 className="text-sm font-semibold mb-3">Weekly Activity</h3>
-          <Line data={lineData} />
-        </div>
-        <div className="bg-white p-6 rounded shadow">
-          <h3 className="text-sm font-semibold mb-3">Dispute Overview</h3>
-          <Doughnut data={doughnutData} />
+      {/* Recent Bookings Table */}
+      <div className="bg-white rounded-xl shadow p-4">
+        <h2 className="text-lg font-semibold mb-4">Recent Bookings</h2>
+        <div className="overflow-x-auto">
+          <table className="min-w-full table-auto border-collapse">
+            <thead className="bg-gray-100 text-gray-700">
+              <tr>
+                <th className="p-2 border">Booking ID</th>
+                <th className="p-2 border">Customer</th>
+                <th className="p-2 border">Venue</th>
+                <th className="p-2 border">Date</th>
+                <th className="p-2 border">Status</th>
+                <th className="p-2 border">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recentBookings.map((b) => (
+                <tr key={b._id} className="text-center">
+                  <td className="p-2 border">{b._id}</td>
+                  <td className="p-2 border">{b.customerName}</td>
+                  <td className="p-2 border">{b.venueName}</td>
+                  <td className="p-2 border">{new Date(b.date).toLocaleDateString()}</td>
+                  <td className="p-2 border">
+                    <span
+                      className={`px-2 py-1 rounded text-white text-sm ${
+                        b.status === "Confirmed"
+                          ? "bg-green-500"
+                          : b.status === "Pending"
+                          ? "bg-yellow-500"
+                          : "bg-red-500"
+                      }`}
+                    >
+                      {b.status}
+                    </span>
+                  </td>
+                  <td className="p-2 border">
+                    <button
+                      onClick={() => alert(`View booking ${b._id}`)}
+                      className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                    >
+                      View
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   );
 };
+
+const SummaryCard = ({ icon, label, value }) => (
+  <div className="bg-white rounded-xl shadow flex items-center p-4 space-x-4">
+    <div className="bg-red-100 text-red-600 p-3 rounded-full text-xl">{icon}</div>
+    <div>
+      <div className="text-sm text-gray-500">{label}</div>
+      <div className="text-2xl font-semibold">{value}</div>
+    </div>
+  </div>
+);
 
 export default Dashboard;

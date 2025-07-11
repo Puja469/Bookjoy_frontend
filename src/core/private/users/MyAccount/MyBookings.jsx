@@ -15,7 +15,7 @@ const MyBookings = () => {
         const data = await fetchBookingsByUser(userId, token);
         setBookings(data);
       } catch (err) {
-        console.error("❌ Failed to fetch bookings:", err);
+        console.error(" Failed to fetch bookings:", err);
         setError("Failed to load bookings. Please try again.");
       } finally {
         setLoading(false);

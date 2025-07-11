@@ -75,7 +75,8 @@ function MenuTier() {
     <>
       <Header />
       <div className="min-h-screen pt-28 pb-10 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
+        {/* Main container with grey border */}
+        <div className="max-w-6xl mx-auto border-2 border-gray-300 rounded-3xl p-8 bg-white shadow-sm">
           <div className="flex items-center gap-2 mb-6">
             <button
               onClick={() => navigate(-1)}

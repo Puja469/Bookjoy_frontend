@@ -17,7 +17,7 @@ const ProfileImage = () => {
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
 
-  // Fetch user details
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -41,22 +41,22 @@ const ProfileImage = () => {
     fetchData();
   }, [userId, token]);
 
-  // Handle profile image upload
+  
   const handleProfileImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
       console.log("Uploading file:", file);
       setSelectedFile(file);
-      setProfileImage(URL.createObjectURL(file)); // Show preview
+      setProfileImage(URL.createObjectURL(file)); 
     }
   };
 
-  // Handle input change
+  
   const handleInputChange = (e) => {
     setUserDetails({ ...userDetails, [e.target.name]: e.target.value });
   };
 
-  // Handle form submit
+  
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -101,7 +101,7 @@ const ProfileImage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center mt-4">
-  {/* Profile Image */}
+  
   <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-white overflow-hidden aspect-square">
     <img
       src={profileImage}
@@ -110,7 +110,7 @@ const ProfileImage = () => {
     />
   </div>
 
-      {/* User Info */}
+     
       <div className="mt-4 text-center">
         <h2 className="text-xl sm:text-2xl font-bold">{userDetails.fname || "User Name"}</h2>
         <p className="text-gray-500 text-sm sm:text-base">{userDetails.email || "No email provided"}</p>
@@ -123,7 +123,7 @@ const ProfileImage = () => {
         </button>
       </div>
 
-      {/* Edit Profile Modal */}
+     
       {editMode && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 px-4">
           <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">

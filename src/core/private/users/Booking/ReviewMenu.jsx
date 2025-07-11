@@ -27,8 +27,8 @@ function ReviewMenu() {
   const goToPayment = () => {
     const updatedData = {
       ...bookingData,
-      menu_items: menuItems.map((item) => item._id),           // only IDs for backend
-      selected_menu_items: menuItems                           // full item details for review
+      menu_items: menuItems.map((item) => item._id),           
+      selected_menu_items: menuItems                         
     };
     localStorage.setItem("bookingForm", JSON.stringify(updatedData));
     console.log("Saving to localStorage:", updatedData);
@@ -47,7 +47,8 @@ function ReviewMenu() {
     <>
       <Header />
       <div className="min-h-screen pt-28 pb-10 px-6 bg-white">
-        <div className="max-w-7xl mx-auto">
+       
+        <div className="max-w-7xl mx-auto border-2 border-gray-300 rounded-3xl p-8 bg-white shadow-sm">
           <div className="flex items-center gap-4 mb-8">
             <button onClick={() => navigate(-1)} className="text-gray-600 text-xl hover:text-red-500">
               <FaArrowLeft />
