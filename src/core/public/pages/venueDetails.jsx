@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { fetchVenueById, incrementViewCount, getViewCount } from "../../../services/apiServices";
-import Header from "../../../components/Header";
-import Footer from "../../../components/Footer";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import {
-  FaStar,
-  FaUsers,
+  FaArrowLeft,
+  FaCalendarAlt,
   FaEye,
   FaHome,
-  FaCalendarAlt,
   FaMapMarkerAlt,
+  FaStar,
+  FaUsers,
 } from "react-icons/fa";
+import { useNavigate, useParams } from "react-router-dom";
+import Footer from "../../../components/Footer";
+import Header from "../../../components/Header";
 import { useAuth } from "../../../context/AuthContext";
+import { fetchVenueById, getViewCount, incrementViewCount } from "../../../services/apiServices";
 
 function VenueDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isLoggedIn, user } = useAuth(); 
+  const { isLoggedIn, user } = useAuth();
 
   const [venue, setVenue] = useState(null);
   const [activeTab, setActiveTab] = useState("info");
@@ -34,7 +35,7 @@ function VenueDetails() {
   useEffect(() => {
     const savedCheckIn = localStorage.getItem(`checkInDate_${id}`);
     const savedCheckOut = localStorage.getItem(`checkOutDate_${id}`);
-    
+
     if (savedCheckIn) {
       setCheckInDate(new Date(savedCheckIn));
     }
@@ -47,12 +48,12 @@ function VenueDetails() {
   const saveDatesToStorage = (checkIn, checkOut) => {
     localStorage.setItem(`checkInDate_${id}`, checkIn.toISOString());
     localStorage.setItem(`checkOutDate_${id}`, checkOut.toISOString());
-    
+
     // Also save global dates for booking process
     localStorage.setItem('selectedCheckInDate', checkIn.toISOString());
     localStorage.setItem('selectedCheckOutDate', checkOut.toISOString());
     localStorage.setItem('selectedVenueId', id);
-    localStorage.setItem("selectedEventType", venue.eventName); 
+    localStorage.setItem("selectedEventType", venue.eventName);
   };
 
   // Format date to dd/mm/yyyy
@@ -99,7 +100,7 @@ function VenueDetails() {
           const endDate = new Date(checkOutDate);
 
           for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
-            booked.push(new Date(date.getTime())); 
+            booked.push(new Date(date.getTime()));
           }
         }
       });
@@ -121,7 +122,7 @@ function VenueDetails() {
     nextWeekEnd.setDate(nextWeekStart.getDate() + 2);
 
     for (let date = new Date(nextWeekStart); date <= nextWeekEnd; date.setDate(date.getDate() + 1)) {
-      mockBookedDates.push(new Date(date.getTime())); 
+      mockBookedDates.push(new Date(date.getTime()));
     }
 
     const twoWeeksStart = new Date(today);
@@ -130,7 +131,7 @@ function VenueDetails() {
     twoWeeksEnd.setDate(twoWeeksStart.getDate() + 1);
 
     for (let date = new Date(twoWeeksStart); date <= twoWeeksEnd; date.setDate(date.getDate() + 1)) {
-      mockBookedDates.push(new Date(date.getTime())); 
+      mockBookedDates.push(new Date(date.getTime()));
     }
 
     return mockBookedDates;
@@ -141,7 +142,7 @@ function VenueDetails() {
       const userId = user?.id || user?._id || null;
       const incrementResponse = await incrementViewCount(venueId, userId);
       console.log("Increment response:", incrementResponse);
-      
+
       if (incrementResponse && incrementResponse.view_count !== undefined) {
         console.log("Setting view count to:", incrementResponse.view_count);
         setViewCount(incrementResponse.view_count);
@@ -172,9 +173,9 @@ function VenueDetails() {
 
         const booked = await fetchBookedDates(id);
         setBookedDates(booked);
-        
+
         setLoading(false);
-        
+
         if (venueData) {
           setTimeout(() => {
             handleViewCount(id);
@@ -258,7 +259,7 @@ function VenueDetails() {
   const handleCheckInChange = (date) => {
     if (validateCheckInDate(date)) {
       setCheckInDate(date);
-      
+
       // If check-out date is before new check-in date, adjust it
       let newCheckOut = checkOutDate;
       if (checkOutDate < date) {
@@ -266,7 +267,7 @@ function VenueDetails() {
         newCheckOut.setDate(date.getDate() + 1);
         setCheckOutDate(newCheckOut);
       }
-      
+
       // If check-out date exceeds 3 days from new check-in, adjust it
       const diffTime = checkOutDate.getTime() - date.getTime();
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -276,7 +277,7 @@ function VenueDetails() {
         newCheckOut = maxCheckOut;
         setCheckOutDate(maxCheckOut);
       }
-      
+
       // Save to localStorage
       saveDatesToStorage(date, newCheckOut);
     }
@@ -293,7 +294,7 @@ function VenueDetails() {
 
   const tileContent = ({ date, view }) => {
     if (view === 'month' && isDateBooked(date)) {
-      return <div className="w-2 h-2 bg-red-500 rounded-full mx-auto mt-1"></div>;
+      return <div className="w-2 h-2 bg-[#F87171] rounded-full mx-auto mt-1"></div>;
     }
     return null;
   };
@@ -318,16 +319,16 @@ function VenueDetails() {
   const tileDisabledCheckOut = ({ date, view }) => {
     if (view === 'month') {
       const today = getTodayDate();
-      
+
       // Disable dates before today
       if (date < today) return true;
-      
+
       // Disable dates before check-in date
       if (date < checkInDate) return true;
-      
+
       // Disable booked dates
       if (isDateBooked(date)) return true;
-      
+
       // Disable dates beyond 3 days from check-in
       const diffTime = date.getTime() - checkInDate.getTime();
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -380,6 +381,17 @@ function VenueDetails() {
   return (
     <div className="bg-white min-h-screen">
       <Header />
+
+      {/* Back Arrow */}
+      <div className="px-4 pt-28 md:px-20">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 text-gray-600 hover:text-[#F87171] transition-colors duration-300 mb-4 group"
+        >
+          <FaArrowLeft className="text-lg group-hover:-translate-x-1 transition-transform duration-300" />
+          <span className="font-medium">Back</span>
+        </button>
+      </div>
 
       <style>
         {`
@@ -510,7 +522,7 @@ function VenueDetails() {
       </style>
 
       {/* Gallery */}
-      <div className="px-4 pt-28 md:px-20">
+      <div className="px-4 md:px-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
           <img
             src={`http://localhost:3000/venue_images/${mainImage}`}
@@ -521,9 +533,8 @@ function VenueDetails() {
           <div className="grid grid-cols-2 grid-rows-2 gap-2">
             <img
               src={`http://localhost:3000/venue_images/${venue.image_url}`}
-              className={`h-48 object-cover w-full rounded-lg gallery-thumbnail ${
-                mainImage === venue.image_url ? 'active' : ''
-              }`}
+              className={`h-48 object-cover w-full rounded-lg gallery-thumbnail ${mainImage === venue.image_url ? 'active' : ''
+                }`}
               alt="venue main"
               onClick={() => handleImageClick(venue.image_url)}
             />
@@ -531,9 +542,8 @@ function VenueDetails() {
               <img
                 key={i}
                 src={`http://localhost:3000/venue_images/${img}`}
-                className={`h-48 object-cover w-full rounded-lg gallery-thumbnail ${
-                  mainImage === img ? 'active' : ''
-                }`}
+                className={`h-48 object-cover w-full rounded-lg gallery-thumbnail ${mainImage === img ? 'active' : ''
+                  }`}
                 alt={`venue-${i + 1}`}
                 onClick={() => handleImageClick(img)}
               />
@@ -542,17 +552,15 @@ function VenueDetails() {
         </div>
         <div className="flex justify-center mt-4 space-x-2">
           <button
-            className={`w-2 h-2 rounded-full transition-colors ${
-              mainImage === venue.image_url ? 'bg-red-400' : 'bg-gray-300'
-            }`}
+            className={`w-2 h-2 rounded-full transition-colors ${mainImage === venue.image_url ? 'bg-[#F87171]' : 'bg-gray-300'
+              }`}
             onClick={() => handleImageClick(venue.image_url)}
           />
           {venue.images && venue.images.slice(1, 4).map((img, i) => (
             <button
               key={i}
-              className={`w-2 h-2 rounded-full transition-colors ${
-                mainImage === img ? 'bg-red-400' : 'bg-gray-300'
-              }`}
+              className={`w-2 h-2 rounded-full transition-colors ${mainImage === img ? 'bg-[#F87171]' : 'bg-gray-300'
+                }`}
               onClick={() => handleImageClick(img)}
             />
           ))}
@@ -577,9 +585,8 @@ function VenueDetails() {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-4 py-2 rounded-full border ${
-                  activeTab === tab ? "bg-red-500 text-white" : "text-gray-700"
-                }`}
+                className={`px-4 py-2 rounded-full border ${activeTab === tab ? "bg-red-500 text-white" : "text-gray-700"
+                  }`}
               >
                 {tab.charAt(0).toUpperCase() + tab.slice(1)}
               </button>
@@ -593,7 +600,7 @@ function VenueDetails() {
             {activeTab === "location" && (
               <div>
                 <p className="mb-2 flex items-center gap-2">
-                  <FaMapMarkerAlt className="text-red-500" />
+                  <FaMapMarkerAlt className="text-[#F87171]" />
                   <strong>Location:</strong> {venue.location}
                 </p>
                 <iframe
@@ -702,14 +709,13 @@ function VenueDetails() {
           <button
             onClick={handleBookingClick}
             disabled={hasBookingConflict() || dateError}
-            className={`mt-4 w-full py-2 rounded-lg text-lg shadow ${
-              hasBookingConflict() || dateError
-                ? 'bg-gray-400 cursor-not-allowed text-gray-700' 
+            className={`mt-4 w-full py-2 rounded-lg text-lg shadow ${hasBookingConflict() || dateError
+                ? 'bg-gray-400 cursor-not-allowed text-gray-700'
                 : 'bg-red-400 hover:bg-red-300 text-white'
-            }`}
+              }`}
           >
-            {hasBookingConflict() ? 'Dates Unavailable' : 
-             dateError ? 'Invalid Date Selection' : 'Book Now'}
+            {hasBookingConflict() ? 'Dates Unavailable' :
+              dateError ? 'Invalid Date Selection' : 'Book Now'}
           </button>
         </div>
       </div>

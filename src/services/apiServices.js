@@ -11,53 +11,53 @@ const apiClient = axios.create({
 
 
 export const registerUser = async (registrationData) => {
-    const response = await apiClient.post("/user", registrationData);
-    return response.data;
-  };
-  
- 
-  export const loginUser = async (loginData) => {
-    const response = await apiClient.post("/user/sign", loginData);
-    return response.data;
-  };
-  
-  export const updateUser = async (userId, token, formData) => {
-    const response = await apiClient.put(`/user/${userId}`, formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data", 
-      },
-    });
-    return response.data;
-  };
-  
+  const response = await apiClient.post("/user", registrationData);
+  return response.data;
+};
 
-  
-  
-  export const sendVerificationOtp = async (email) => {
-    const response = await apiClient.post("/user/send-otp", { email });
-    return response.data;
-  };
-  
-  
-  export const verifyOtp = async (otpData) => {
-    const response = await apiClient.post("/user/verify-email", otpData);
-    return response.data;
-  };
-  
-  
-  export const sendPasswordResetOtp = async (email) => {
-    const response = await apiClient.post("/user/forgot-password", { email });
-    return response.data;
-  };
-  
-  
-  export const resetPassword = async (resetData) => {
-    const response = await apiClient.post("/user/reset-password", resetData);
-    return response.data;
-  };
-  
- 
+
+export const loginUser = async (loginData) => {
+  const response = await apiClient.post("/user/sign", loginData);
+  return response.data;
+};
+
+export const updateUser = async (userId, token, formData) => {
+  const response = await apiClient.put(`/user/${userId}`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+};
+
+
+
+
+export const sendVerificationOtp = async (email) => {
+  const response = await apiClient.post("/user/send-otp", { email });
+  return response.data;
+};
+
+
+export const verifyOtp = async (otpData) => {
+  const response = await apiClient.post("/user/verify-email", otpData);
+  return response.data;
+};
+
+
+export const sendPasswordResetOtp = async (email) => {
+  const response = await apiClient.post("/user/forgot-password", { email });
+  return response.data;
+};
+
+
+export const resetPassword = async (resetData) => {
+  const response = await apiClient.post("/user/reset-password", resetData);
+  return response.data;
+};
+
+
 export const fetchNotifications = async (userId, token) => {
   const response = await apiClient.get(`/notifications?userId=${userId}`, {
     headers: {
@@ -87,7 +87,7 @@ export const fetchUserDetails = async (userId, token) => {
   const response = await apiClient.get(`/user/${userId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
-      
+
     },
   });
   return response.data;
@@ -104,7 +104,7 @@ export const createEvent = async (eventData, token) => {
   const response = await apiClient.post("/event", eventData, {
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "multipart/form-data", 
+      "Content-Type": "multipart/form-data",
     },
   });
   return response.data;
@@ -113,6 +113,12 @@ export const createEvent = async (eventData, token) => {
 // Fetch venues filtered by event name (e.g., Wedding, Birthday)
 export const fetchVenuesByEvent = async (eventName) => {
   const response = await apiClient.get(`/venue?event=${eventName}`);
+  return response.data;
+};
+
+// Fetch all venues
+export const fetchAllVenues = async () => {
+  const response = await apiClient.get("/venue");
   return response.data;
 };
 
@@ -239,12 +245,12 @@ export const fetchMenuItemsByTier = async (tierId) => {
 
 export const fetchBookedDates = async (venueId) => {
   const response = await apiClient.get(`/booking/venue/${venueId}/booked-dates`);
-  return response.data; 
+  return response.data;
 };
 
 export const incrementViewCount = async (venueId, userId = null) => {
   const response = await apiClient.post(`/venue/${venueId}/views`, {
-    userId: userId, 
+    userId: userId,
   });
   return response.data;
 };

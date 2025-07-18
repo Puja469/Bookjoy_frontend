@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../components/Header";
+import { Link, useNavigate } from "react-router-dom";
 import Carousel from "../../components/Carousel";
-import { fetchAllEvents } from "../../services/apiServices";
 import Footer from "../../components/Footer";
-import { Link } from "react-router-dom";
+import Header from "../../components/Header";
+import { fetchAllEvents } from "../../services/apiServices";
 
 function Home() {
   const [events, setEvents] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchAllEvents()
@@ -27,7 +28,7 @@ function Home() {
       <div className="px-6 py-10 bg-white">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Events</h2>
-          <a href="/events" className="text-sm text-blue-500 hover:underline">
+          <a href="/events" className="text-sm text-[#F87171] hover:underline">
             View All
           </a>
         </div>
@@ -65,6 +66,7 @@ function Home() {
               bg: "bg-[#FDE68A]",
               img: "/assets/images/party.jpeg",
               icon: "/assets/images/wedicon.jpeg",
+              eventType: "Birthday Party",
             },
             {
               title: "Wedding Venue",
@@ -73,6 +75,7 @@ function Home() {
               bg: "bg-[#E9D5FF]",
               img: "/assets/images/wed.png",
               icon: "/assets/images/biricon.jpeg",
+              eventType: "Wedding",
             },
             {
               title: "Meeting Venue",
@@ -81,6 +84,7 @@ function Home() {
               bg: "bg-[#A7F3D0]",
               img: "/assets/images/met.jpeg",
               icon: "/assets/images/groupicon.jpeg",
+              eventType: "Meeting Hall",
             },
           ].map((venue, index) => (
             <div
@@ -104,7 +108,10 @@ function Home() {
               <div className="pt-12 px-6 pb-6 text-center">
                 <h3 className="text-lg font-bold text-black mb-2">{venue.title}</h3>
                 <p className="text-sm text-gray-700 mb-4">{venue.description}</p>
-                <button className="bg-[#F87171] hover:bg-[#f75e5e] text-white text-sm px-6 py-2 rounded-full transition-all duration-200">
+                <button
+                  className="bg-[#F87171] hover:bg-[#f75e5e] text-white text-sm px-6 py-2 rounded-full transition-all duration-200"
+                  onClick={() => navigate(`/venues?event=${encodeURIComponent(venue.eventType)}`)}
+                >
                   Find Your Venue
                 </button>
               </div>
@@ -161,7 +168,7 @@ function Home() {
             <h2 className="text-4xl font-bold text-gray-900 mb-4">About Us</h2>
             <div className="w-16 h-1 bg-[#F87171] mx-auto mb-6"></div>
           </div>
-          
+
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-lg">
               <div className="space-y-6">
@@ -176,7 +183,7 @@ function Home() {
                 </p>
               </div>
             </div>
-            
+
             <div className="grid grid-cols-2 gap-6">
               <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl text-center shadow-md">
                 <div className="text-2xl font-bold text-[#F87171] mb-2">500+</div>

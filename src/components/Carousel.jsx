@@ -1,11 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, Navigation, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-fade";
-import "swiper/css/pagination";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 const slides = [
   {
@@ -13,21 +13,21 @@ const slides = [
     title: "Plan the Perfect Wedding",
     subtitle: "Discover romantic venues for your big day",
     button: "Browse Wedding Venues",
-    event: "Wedding", 
+    event: "Wedding",
   },
   {
     image: "/assets/images/bann5.webp",
     title: "Celebrate with Style",
     subtitle: "From birthdays to baby showers – find it all here",
     button: "Explore Party Halls",
-    event: "Party",
+    event: "Birthday Party",
   },
   {
     image: "/assets/images/banner2.jpeg",
     title: "Professional & Polished",
     subtitle: "Corporate venues for your next big meeting or seminar",
     button: "View Corporate Spaces",
-    event: "Corporate",
+    event: "Meeting Hall",
   },
 ];
 
@@ -67,7 +67,7 @@ const Carousel = () => {
                 <h2 className="text-4xl md:text-6xl font-bold">{slide.title}</h2>
                 <p className="text-lg md:text-xl">{slide.subtitle}</p>
                 <button
-                  className="bg-[#F87171] hover:bg-[#ef4444] px-6 py-3 rounded-xl text-lg font-semibold transition-all"
+                  className="bg-[#F87171] hover:bg-[#F87171] px-6 py-3 rounded-xl text-lg font-semibold transition-all"
                   onClick={() => handleButtonClick(slide.event)}
                 >
                   {slide.button}

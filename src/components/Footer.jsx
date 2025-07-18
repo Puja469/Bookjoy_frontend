@@ -1,12 +1,12 @@
 import React from "react";
-import { FaFacebookF, FaInstagram, FaPhoneAlt, FaMapMarkerAlt, FaEnvelope } from "react-icons/fa";
+import { FaEnvelope, FaFacebookF, FaInstagram, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
 import { SiTiktok } from "react-icons/si";
 
 function Footer() {
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ 
+      element.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
       });
@@ -16,10 +16,10 @@ function Footer() {
   return (
     <footer className="text-white py-8 px-6" style={{ backgroundColor: '#FF8C8C' }}>
       <div className="max-w-6xl mx-auto">
-        
+
         {/* Top Section */}
         <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-8">
-          
+
           {/* Social Icons */}
           <div className="flex-1 text-center md:text-left">
             <h4 className="text-xl font-bold mb-4 text-white">Get Connected</h4>
@@ -35,25 +35,25 @@ function Footer() {
               </a>
             </div>
           </div>
-          
+
           {/* Payment Partners */}
           <div className="flex-1 text-center">
             <h4 className="text-xl font-bold mb-4 text-white">Payment Partner</h4>
             <div className="flex gap-4 items-center justify-center">
-              <img 
-                src="/assets/images/khalti.png" 
-                alt="Khalti" 
+              <img
+                src="/assets/images/khalti.png"
+                alt="Khalti"
                 className="h-10 md:h-12 object-contain"
               />
             </div>
           </div>
-          
+
           {/* About & Help */}
           <div className="flex-1 text-center">
             <h4 className="text-xl font-bold mb-4 text-white">About & Help</h4>
             <div className="space-y-2 text-sm text-white">
               <p>
-                <button 
+                <button
                   onClick={() => scrollToSection('about-us')}
                   className="hover:underline cursor-pointer bg-transparent border-none text-white"
                 >
@@ -61,7 +61,7 @@ function Footer() {
                 </button>
               </p>
               <p>
-                <button 
+                <button
                   onClick={() => scrollToSection('help-center')}
                   className="hover:underline cursor-pointer bg-transparent border-none text-white"
                 >
@@ -70,7 +70,7 @@ function Footer() {
               </p>
             </div>
           </div>
-          
+
           {/* Contact Info */}
           <div className="flex-1 text-center md:text-right">
             <h4 className="text-xl font-bold mb-4 text-white">Contact Us</h4>
@@ -90,13 +90,13 @@ function Footer() {
             </div>
           </div>
         </div>
-        
+
         {/* Bottom Section */}
         <div className="text-center border-t border-red-300 pt-6">
           <div className="mb-4">
-            <img 
-              src="/assets/images/logo.png" 
-              alt="BookJoy Logo" 
+            <img
+              src="/assets/images/logo.png"
+              alt="BookJoy Logo"
               className="mx-auto h-28 md:h-32 object-contain mb-2"
             />
           </div>

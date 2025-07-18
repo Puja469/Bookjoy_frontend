@@ -164,7 +164,7 @@ const Layout = () => {
               <FaBell className="mr-3" />
               Notifications
               {unreadCount > 0 && (
-                <span className="ml-2 bg-red-500 text-white rounded-full text-xs px-2 py-0.5">
+                <span className="ml-2 bg-[#F87171] text-white rounded-full text-xs px-2 py-0.5">
                   {unreadCount}
                 </span>
               )}
@@ -176,7 +176,7 @@ const Layout = () => {
         <div className="p-4">
           <button
             onClick={handleLogout}
-            className="w-full text-left px-4 py-2 rounded flex items-center bg-red-600 hover:bg-red-700 text-white text-lg"
+            className="w-full text-left px-4 py-2 rounded flex items-center bg-[#F87171] hover:bg-red-700 text-white text-lg"
           >
             <FaSignOutAlt className="mr-3" />
             Logout

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
-import { createBooking } from "../../../../services/apiServices";
-import Header from "../../../../components/Header";
+import { FaCalendarAlt, FaCheckCircle, FaReceipt, FaSpinner, FaTimesCircle } from "react-icons/fa";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Footer from "../../../../components/Footer";
-import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import Header from "../../../../components/Header";
+import { createBooking } from "../../../../services/apiServices";
 
 function PaymentSuccess() {
   const location = useLocation();
@@ -78,36 +78,124 @@ function PaymentSuccess() {
   return (
     <>
       <Header />
-      <div className="min-h-screen pt-28 pb-16 px-6 bg-white flex justify-center items-center">
-        <div className="max-w-md text-center bg-gray-50 p-8 border rounded-lg shadow">
-          {status === "loading" && <p className="text-lg">Verifying payment...</p>}
-
-          {status === "success" && (
-            <>
-              <FaCheckCircle className="text-green-600 text-5xl mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-green-700 mb-2">Payment Successful!</h2>
-              <p className="mb-4">Your booking has been confirmed. Thank you!</p>
-              <Link
-                to="/my-account/bookings"
-                className="inline-block bg-green-600 text-white px-6 py-3 rounded-full font-medium hover:bg-green-700"
-              >
-                View My Bookings
-              </Link>
-            </>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-28 pb-16 px-4">
+        <div className="max-w-2xl mx-auto">
+          {/* Loading State */}
+          {status === "loading" && (
+            <div className="bg-white rounded-2xl shadow-xl p-8 text-center border border-gray-100">
+              <div className="animate-spin text-4xl text-blue-600 mb-6">
+                <FaSpinner className="mx-auto" />
+              </div>
+              <h2 className="text-2xl font-bold text-gray-800 mb-3">Processing Your Payment</h2>
+              <p className="text-gray-600 mb-6">Please wait while we verify your payment and create your booking...</p>
+              <div className="flex justify-center space-x-2">
+                <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce"></div>
+                <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+              </div>
+            </div>
           )}
 
+          {/* Success State */}
+          {status === "success" && (
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+              {/* Success Header */}
+              <div className="bg-gradient-to-r from-green-500 to-emerald-600 p-8 text-center text-white">
+                <div className="bg-white/20 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+                  <FaCheckCircle className="text-4xl" />
+                </div>
+                <h1 className="text-3xl font-bold mb-2">Payment Successful!</h1>
+                <p className="text-green-100 text-lg">Your booking has been confirmed</p>
+              </div>
+
+              {/* Success Content */}
+              <div className="p-8">
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+                    <FaCheckCircle className="text-2xl text-green-600" />
+                  </div>
+                  <h2 className="text-xl font-semibold text-gray-800 mb-2">Booking Confirmed</h2>
+                  <p className="text-gray-600">Thank you for choosing our service. Your booking details have been sent to your email.</p>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="space-y-4">
+                  <Link
+                    to="/my-account/bookings"
+                    className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-4 px-6 rounded-xl font-semibold hover:from-green-700 hover:to-emerald-700 transform hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg"
+                  >
+                    <FaCalendarAlt />
+                    <span>View My Bookings</span>
+                  </Link>
+
+                  <Link
+                    to="/"
+                    className="w-full bg-gray-100 text-gray-700 py-4 px-6 rounded-xl font-semibold hover:bg-gray-200 transition-all duration-200 flex items-center justify-center space-x-2"
+                  >
+                    <FaReceipt />
+                    <span>Back to Home</span>
+                  </Link>
+                </div>
+
+                {/* Additional Info */}
+                <div className="mt-8 p-4 bg-blue-50 rounded-xl border border-blue-100">
+                  <p className="text-sm text-blue-800 text-center">
+                    <strong>Need help?</strong> Contact our support team at support@bookjoy.com
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Error State */}
           {status === "error" && (
-            <>
-              <FaTimesCircle className="text-red-600 text-5xl mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-red-700 mb-2">Something went wrong!</h2>
-              <p className="mb-4">Payment verification failed or booking was not created.</p>
-              <Link
-                to="/"
-                className="inline-block bg-red-600 text-white px-6 py-3 rounded-full font-medium hover:bg-red-700"
-              >
-                Back to Home
-              </Link>
-            </>
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+              {/* Error Header */}
+              <div className="bg-gradient-to-r from-red-500 to-pink-600 p-8 text-center text-white">
+                <div className="bg-white/20 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+                  <FaTimesCircle className="text-4xl" />
+                </div>
+                <h1 className="text-3xl font-bold mb-2">Payment Failed</h1>
+                <p className="text-red-100 text-lg">Something went wrong with your payment</p>
+              </div>
+
+              {/* Error Content */}
+              <div className="p-8">
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mb-4">
+                    <FaTimesCircle className="text-2xl text-red-600" />
+                  </div>
+                  <h2 className="text-xl font-semibold text-gray-800 mb-2">Verification Failed</h2>
+                  <p className="text-gray-600">We couldn't verify your payment or create your booking. Please try again or contact support.</p>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="space-y-4">
+                  <Link
+                    to="/"
+                    className="w-full bg-gradient-to-r from-red-600 to-pink-600 text-white py-4 px-6 rounded-xl font-semibold hover:from-red-700 hover:to-pink-700 transform hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg"
+                  >
+                    <FaReceipt />
+                    <span>Back to Home</span>
+                  </Link>
+
+                  <button
+                    onClick={() => window.history.back()}
+                    className="w-full bg-gray-100 text-gray-700 py-4 px-6 rounded-xl font-semibold hover:bg-gray-200 transition-all duration-200 flex items-center justify-center space-x-2"
+                  >
+                    <FaCalendarAlt />
+                    <span>Try Again</span>
+                  </button>
+                </div>
+
+                {/* Additional Info */}
+                <div className="mt-8 p-4 bg-red-50 rounded-xl border border-red-100">
+                  <p className="text-sm text-red-800 text-center">
+                    <strong>Need assistance?</strong> Contact our support team at support@bookjoy.com
+                  </p>
+                </div>
+              </div>
+            </div>
           )}
         </div>
       </div>

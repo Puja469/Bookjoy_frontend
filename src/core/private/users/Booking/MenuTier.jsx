@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../../../components/Header";
-import Footer from "../../../../components/Footer";
-import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import Footer from "../../../../components/Footer";
+import Header from "../../../../components/Header";
 import { fetchMenuTiersByVenue } from "../../../../services/apiServices";
 
 function MenuTier() {
@@ -97,9 +97,8 @@ function MenuTier() {
               return (
                 <div
                   key={card.backendKey}
-                  className={`rounded shadow-lg p-4 ${card.color} border-2 cursor-pointer transition-all duration-300 ${
-                    isSelected ? "border-red-500" : "border-transparent"
-                  }`}
+                  className={`rounded shadow-lg p-4 ${card.color} border-2 cursor-pointer transition-all duration-300 ${isSelected ? "border-red-500" : "border-transparent"
+                    }`}
                   onClick={() => handleTierSelect(card.backendKey)}
                 >
                   <img

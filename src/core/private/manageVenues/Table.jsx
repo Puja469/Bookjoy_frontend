@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaEdit, FaTrash, FaEye, FaStar } from "react-icons/fa";
+import { FaEdit, FaEye, FaStar, FaTrash } from "react-icons/fa";
 
 const VenueTable = ({ venues = [], onEdit, onDelete, onView }) => {
   const [deleteConfirm, setDeleteConfirm] = useState(null);
@@ -113,7 +113,7 @@ const VenueTable = ({ venues = [], onEdit, onDelete, onView }) => {
                 </button>
                 <button
                   onClick={() => setDeleteConfirm(venue)}
-                  className="text-red-600 hover:underline"
+                  className="text-[#F87171] hover:underline"
                   title="Delete"
                 >
                   <FaTrash />
@@ -138,11 +138,10 @@ const VenueTable = ({ venues = [], onEdit, onDelete, onView }) => {
           <button
             key={index}
             onClick={() => setCurrentPage(index + 1)}
-            className={`px-3 py-1 rounded ${
-              currentPage === index + 1
+            className={`px-3 py-1 rounded ${currentPage === index + 1
                 ? "bg-red-500 text-white"
                 : "bg-gray-100 hover:bg-gray-200"
-            }`}
+              }`}
           >
             {index + 1}
           </button>
